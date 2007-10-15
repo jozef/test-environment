@@ -81,7 +81,7 @@ Test::Environment::Plugin::* L<http://search.cpan.org/search?query=Test%3A%3AEnv
 
 =head1 AUTHOR
 
-Jozef Kutej, E<lt>jk@E<gt>
+Jozef Kutej, E<lt>jozef@kutej.net<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
