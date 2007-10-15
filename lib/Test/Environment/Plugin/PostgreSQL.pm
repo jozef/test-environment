@@ -13,8 +13,10 @@ use base qw{ Exporter };
 our @EXPORT = qw{
 	psql
 };
+our $debug = 0;
 
 use Carp::Clan;
+use String::ShellQuote;
 
 sub import {
 	my $package = shift;
@@ -41,6 +43,9 @@ sub psql {
 	my $stderr_redirect = $arg{'stderr_redirect'};
 	my $egrep           = $arg{'egrep'};
 	my $invert_match    = $arg{'invert_match'};
+	my @switches        = @{$arg{'switches'}} if exists $arg{'switches'};
+	
+	local $debug = 1 if ($arg{'debug'} or $ENV{'IN_DEBUG_MODE'});
 	
 	# if there is no command return nothink to do more
 	return if not defined $command;
@@ -84,14 +89,16 @@ sub psql {
 	my @cmd = (
 		@pre_parameters,
 		'psql',
+		@switches,
 		'-c',
-		'"'.$command.'"',
+		$command,
 		@additional_parameters,
 	);
-	my $cmd = join(' ', @cmd);
-	print 'executing: ', $cmd, "\n";
+	my $cmd = shell_quote @cmd;
+	print STDERR '+ ', $cmd, "\n" if $debug;
 	my @ret = `$cmd`;
 	
+	return @ret if defined wantarray;
 	return join('', @ret);
 }
 
