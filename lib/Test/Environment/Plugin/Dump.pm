@@ -32,6 +32,8 @@ Default dump folder is $FindBin::Bin.'/dumps'.
 use strict;
 use warnings;
 
+our $VERSION = 0.01;
+
 use base qw{ Exporter };
 our @EXPORT = qw{
 	dump_with_name
@@ -40,6 +42,7 @@ our @EXPORT = qw{
 
 use Carp::Clan;
 use File::Slurp;
+use FindBin;
 
 
 =head1 FUNCTIONS

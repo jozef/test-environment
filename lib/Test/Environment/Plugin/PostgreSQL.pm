@@ -37,6 +37,8 @@ with lot of options for testing.
 use strict;
 use warnings;
 
+our $VERSION = 0.01;
+
 use base qw{ Exporter };
 our @EXPORT = qw{
 	psql
@@ -119,9 +121,8 @@ sub psql {
 	$command .= ';' if ($command !~ m{;\s*$}xms);
 	
 	
-	my @additional_parameters;	
 	if (defined $output_filename) {
-		push(@additional_parameters, '-o', '"'.$output_filename.'"')
+		push(@switches, '-o', '"'.$output_filename.'"')
 	}
 	
 	# redirect stderr to stdout
@@ -140,7 +141,6 @@ sub psql {
 		@switches,
 		'-c',
 		$command,
-		@additional_parameters,
 	);
 	
 	return @ret if defined wantarray;

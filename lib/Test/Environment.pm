@@ -38,6 +38,8 @@ The plugins will export their routines so you can use them in your tests.
 use strict;
 use warnings;
 
+our $VERSION = 0.01;
+
 use Carp::Clan;
 use English '-no_match_vars';
 use File::Basename;
