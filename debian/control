@@ -8,7 +8,13 @@ Standards-Version: 3.7.2
 
 Package: libtest-environment-perl
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, libtest-differences-perl, libcarp-clan-perl, libfile-slurp-perl, libstring-shellquote-perl
+Depends: ${perl:Depends},
+ ${misc:Depends},
+ libtest-differences-perl,
+ libcarp-clan-perl,
+ libfile-slurp-perl,
+ libstring-shellquote-perl,
+ liblist-moreutils-perl
 Description:  Base module for loading Test::Environment::Plugin::*
  This is the base module to load Test::Environment::Plugin::* modules.
  .
@@ -17,5 +23,3 @@ Description:  Base module for loading Test::Environment::Plugin::*
  $ENV{'RUNNING_ENVIRONMENT'} = 'testing';
  .
  The plugins will export their routines so you can use them in your tests.
- .
- This description was automagically extracted from the module by dh-make-perl.
