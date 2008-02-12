@@ -31,13 +31,23 @@ Test::Environment::Plugin::PostgreSQL - PostreSQL psql function for testing
 This plugin will export 'psql' function that can be used to execute PostreSQL psql command
 with lot of options for testing.
 
+Module will prepare %ENV for postgres:
+
+	'username' => 'PGUSER',
+	'password' => 'PGPASSWORD',
+	'database' => 'PGDATABASE',
+	'hostname' => 'PGHOST',
+	'port'     => 'PGPORT',
+
+Any postgres connection settings not listed or undef will be deleted from the %ENV hash.
+
 =cut
 
 
 use strict;
 use warnings;
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 use base qw{ Exporter };
 our @EXPORT = qw{
@@ -47,7 +57,7 @@ our $debug = 0;
 
 use Carp::Clan;
 use String::ShellQuote;
-
+use List::MoreUtils 'any';
 
 =head1 FUNCTIONS
 
@@ -102,13 +112,16 @@ sub psql {
 		'port'     => 'PGPORT',
 	);
 	
-	# set/delete postgres ENV variables
-	foreach my $arg_name (keys %pg_settings_names) {
-		my $env_name = $pg_settings_names{$arg_name};
-		( defined $arg{$arg_name}
-			? $ENV{$env_name} = $arg{$arg_name}
-			: delete $ENV{$env_name}
-		);		
+	# change %ENV only if at least one pg connection setting set
+	if (any { $pg_settings_names{$_} } keys %arg) {
+		# set/delete postgres ENV variables
+		foreach my $arg_name (keys %pg_settings_names) {
+			my $env_name = $pg_settings_names{$arg_name};
+			( defined $arg{$arg_name}
+				? $ENV{$env_name} = $arg{$arg_name}
+				: delete $ENV{$env_name}
+			);		
+		}
 	}
 	
 	# function paramaters

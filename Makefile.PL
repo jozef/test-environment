@@ -11,6 +11,7 @@ WriteMakefile(
 		File::Slurp        => 0,
 		String::ShellQuote => 0,
 		File::Basename     => 0,
+		List::MoreUtils    => 0,
 	},
 	($] >= 5.005 ?     ## Add these new keywords supported since 5.005
 		(ABSTRACT_FROM => 'lib/Test/Environment.pm', # retrieve abstract from module

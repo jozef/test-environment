@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 #use Test::More 'no_plan';
-use Test::More tests => 13;
+use Test::More tests => 15;
 
 use Test::Differences;
 use English '-no_match_vars';
@@ -77,6 +77,9 @@ is_deeply(
 	],
 	'check output'
 );
+
+is($ENV{'PGUSER'},     $username, 'postres PGUSER should be still set');
+ok(! exists $ENV{'PGPASSWORD'},   'postres PGPASSWORD still UNset');
 
 
 no warnings 'redefine';
