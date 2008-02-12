@@ -16,6 +16,9 @@ Test::Environment::Plugin::PostgreSQL - PostreSQL psql function for testing
 		'hostname' => $config->{'db'}->{'hostname'},
 		'username' => $config->{'db'}->{'username'},
 		'password' => $config->{'db'}->{'password'},
+		# or skip hostname and database and set them via
+		#'dbi_dsn' => 'dbi:Pg:dbname=dsn_test;host=localhost',
+
 	);
 	
 	# execute sql query
@@ -58,6 +61,7 @@ our $debug = 0;
 use Carp::Clan;
 use String::ShellQuote;
 use List::MoreUtils 'any';
+use DBI;
 
 =head1 FUNCTIONS
 
@@ -103,6 +107,25 @@ The rest of the option related to the psql command.
 
 sub psql {
 	my %arg = @_;
+
+	# deparse dbi_dsn if passed
+	if (defined $arg{'dbi_dsn'}) {
+		my($scheme, $driver, $attr_string, $attr_hash, $driver_dsn)
+			= DBI->parse_dsn($arg{'dbi_dsn'});
+		
+		croak 'not a Pg dbi dsn "'.$arg{'dbi_dsn'}.'"'
+			if (($scheme ne 'dbi') or ($driver ne 'Pg'));
+   	
+		# contruct hash out of "dbname=dsn_test;host=localhost;port=123"
+		my %dsn_options = map { split '=', $_ } split(';',$driver_dsn);
+		
+		$arg{'database'} = $dsn_options{'dbname'}
+			if exists $dsn_options{'dbname'};
+		$arg{'hostname'} = $dsn_options{'host'}
+			if exists $dsn_options{'host'};
+		$arg{'port'}     = $dsn_options{'port'}
+			if exists $dsn_options{'port'};
+	}
 
 	my %pg_settings_names = (
 		'username' => 'PGUSER',

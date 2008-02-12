@@ -2,6 +2,7 @@ Revision history for Perl extension Test::Environment.
 
 0.03  Tue Feb 12 09:47:00 2008
    - fixed env unsetting only when needed
+   - parsing of dbi_dsn
 
 0.02  Tue Feb 12 07:44:00 2008
    - change dir fix

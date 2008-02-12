@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 #use Test::More 'no_plan';
-use Test::More tests => 15;
+use Test::More tests => 25;
 
 use Test::Differences;
 use English '-no_match_vars';
@@ -81,6 +81,28 @@ is_deeply(
 is($ENV{'PGUSER'},     $username, 'postres PGUSER should be still set');
 ok(! exists $ENV{'PGPASSWORD'},   'postres PGPASSWORD still UNset');
 
+diag 'parsing of dbi_dsn';
+psql(
+	'dbi_dsn' => 'dbi:Pg:dbname=dsn_test;host=localhost;port=123',
+);
+
+ok(! exists $ENV{'PGUSER'},         'check if psql UNset the postres PGUSER');
+ok(! exists $ENV{'PGPASSWORD'},     'check if psql UNset the postres PGPASSWORD');
+is($ENV{'PGDATABASE'}, 'dsn_test',  'check if psql set the postres PGDATABASE');
+is($ENV{'PGHOST'},     'localhost', 'check if psql set the postres PGHOST');
+is($ENV{'PGPORT'},     '123',       'check if psql set the postres PGPORT');
+
+# check mixing style
+psql(
+	'dbi_dsn' => 'dbi:Pg:dbname=dsn_test;host=localhost',
+	'port'    => $port,	
+);
+
+ok(! exists $ENV{'PGUSER'},         'check if psql UNset the postres PGUSER');
+ok(! exists $ENV{'PGPASSWORD'},     'check if psql UNset the postres PGPASSWORD');
+is($ENV{'PGDATABASE'}, 'dsn_test',  'check if psql set the postres PGDATABASE');
+is($ENV{'PGHOST'},     'localhost', 'check if psql set the postres PGHOST');
+is($ENV{'PGPORT'},     $port,       'check if psql set the postres PGPORT');
 
 no warnings 'redefine';
 

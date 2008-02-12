@@ -1,6 +1,7 @@
-libtest-environment-perl (0.03-1) unstable; urgency=low
+libtest-environment-perl (0.03-2) unstable; urgency=low
 
   * fixed env unsetting only when needed
+  * parsing of dbi_dsn
 
  -- Jozef Kutej <jozef@kutej.net>  Tue, 12 Feb 2008 09:46:15 +0100
 
