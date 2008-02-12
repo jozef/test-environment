@@ -1,3 +1,10 @@
+libtest-environment-perl (0.02-1) unstable; urgency=low
+
+  * change dir fix
+  * propper setting and unsetting postgres env variables
+
+ -- Jozef Kutej <jozef@kutej.net>  Tue, 12 Feb 2008 08:03:52 +0100
+
 libtest-environment-perl (0.01-1) unstable; urgency=low
 
   * Initial Release.

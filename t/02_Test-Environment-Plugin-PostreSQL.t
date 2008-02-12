@@ -3,8 +3,8 @@
 use strict;
 use warnings;
 
-use Test::More; # 'no_plan';
-BEGIN { plan tests => 8 };
+#use Test::More 'no_plan';
+use Test::More tests => 13;
 
 use Test::Differences;
 use English '-no_match_vars';
@@ -17,6 +17,12 @@ BEGIN {
 	$original_execute = \&Test::Environment::Plugin::PostgreSQL::execute;
 }
 
+
+# set all PGenv variables
+foreach my $pgname (qw( PGUSER PGPASSWORD PGDATABASE PGHOST PGPORT )) {
+	$ENV{$pgname} = 1;
+}
+
 my @execute_args;
 my $username = 'user1';
 my $password = 'pass1';
@@ -24,20 +30,33 @@ my $database = 'db';
 my $hostname = 'host';
 my $port     = 'port';
 
+diag 'set password, hostname, port';
 psql(
-	'username' => $username,
 	'password' => $password,
-	'database' => $database,
 	'hostname' => $hostname,
 	'port'     => $port,
 );
 
-is($ENV{'PGUSER'},     $username, 'check if psql set the postres PGUSER');
+ok(! exists $ENV{'PGUSER'},       'check if psql UNset the postres PGUSER');
 is($ENV{'PGPASSWORD'}, $password, 'check if psql set the postres PGPASSWORD');
-is($ENV{'PGDATABASE'}, $database, 'check if psql set the postres PGDATABASE');
+ok(! $ENV{'PGDATABASE'},          'check if psql UNset the postres PGDATABASE');
 is($ENV{'PGHOST'},     $hostname, 'check if psql set the postres PGHOST');
 is($ENV{'PGPORT'},     $port,     'check if psql set the postres PGPORT');
 
+
+diag 'set username, database';
+psql(
+	'username' => $username,
+	'database' => $database,
+);
+
+is($ENV{'PGUSER'},     $username, 'check if psql set the postres PGUSER');
+ok(! exists $ENV{'PGPASSWORD'},   'check if psql UNset the postres PGPASSWORD');
+is($ENV{'PGDATABASE'}, $database, 'check if psql set the postres PGDATABASE');
+ok(! exists $ENV{'PGHOST'},       'check if psql UNset the postres PGHOST');
+ok(! exists $ENV{'PGPORT'},       'check if psql UNset the postres PGPORT');
+
+diag 'execution tests';
 my @output = psql(
 	'execution_path'  => '/tmp',
 	'command'         => 'SELECT',
@@ -47,17 +66,23 @@ my @output = psql(
 
 eq_or_diff(
 	[ @execute_args ],
-	[ 'cd', '/tmp', 'psql', '-x', '-o', '"/tmp/test.out"', '-c', 'SELECT;' ],
+	[ 'psql', '-x', '-o', '"/tmp/test.out"', '-c', 'SELECT;' ],
 	'check call to execute'
 );
 
-is($output[0], 'psql -x -o "/tmp/test.out" -c SELECT;', 'check output');
+is_deeply(
+	[ @output ],
+	[ map { $_."\n" }
+		'psql -x -o "/tmp/test.out" -c SELECT;',
+	],
+	'check output'
+);
 
 
 no warnings 'redefine';
 
 sub Test::Environment::Plugin::PostgreSQL::execute {
 	push @execute_args, @_;
-	unshift @_, 'echo', '-n';
+	unshift @_, 'echo';
 	return $original_execute->(@_);
 }

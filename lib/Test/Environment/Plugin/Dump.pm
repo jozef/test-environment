@@ -22,9 +22,11 @@ This plugin will export 'dump_with_name' and 'set_dumps_folder' functions.
 set_dumps_folder($path) will set the root path where dump files will be looked
 up.
 
-dump_with_name($file_name) will return read_file of the file with $file_name name.  
+dump_with_name($file_name) will return
 
-Default dump folder is $FindBin::Bin.'/dumps'.
+	File::Slurp::read_file($dump_folder.'/'.$file_name)  
+
+Default $dump_folder is $FindBin::Bin.'/dumps'.
 
 =cut
 

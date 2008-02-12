@@ -37,7 +37,7 @@ with lot of options for testing.
 use strict;
 use warnings;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 use base qw{ Exporter };
 our @EXPORT = qw{
@@ -93,12 +93,23 @@ The rest of the option related to the psql command.
 
 sub psql {
 	my %arg = @_;
+
+	my %pg_settings_names = (
+		'username' => 'PGUSER',
+		'password' => 'PGPASSWORD',
+		'database' => 'PGDATABASE',
+		'hostname' => 'PGHOST',
+		'port'     => 'PGPORT',
+	);
 	
-	$ENV{'PGUSER'}     = $arg{'username'} if exists $arg{'username'};
-	$ENV{'PGPASSWORD'} = $arg{'password'} if exists $arg{'password'};
-	$ENV{'PGDATABASE'} = $arg{'database'} if exists $arg{'database'};
-	$ENV{'PGHOST'}     = $arg{'hostname'} if exists $arg{'hostname'};
-	$ENV{'PGPORT'}     = $arg{'port'}     if exists $arg{'port'};	
+	# set/delete postgres ENV variables
+	foreach my $arg_name (keys %pg_settings_names) {
+		my $env_name = $pg_settings_names{$arg_name};
+		( defined $arg{$arg_name}
+			? $ENV{$env_name} = $arg{$arg_name}
+			: delete $ENV{$env_name}
+		);		
+	}
 	
 	# function paramaters
 	my $command         = $arg{'command'};
@@ -130,10 +141,8 @@ sub psql {
 	
 	# chdir if needed
 	if (defined $execution_path) {
-		execute(    # done using execute so we can see it in the debug mode as cd command
-			'cd',
-			$execution_path,
-		);
+		print STDERR '+ cd ', $execution_path, "\n" if $debug;
+		chdir($execution_path);
 	}
 		
 	my @ret = execute(

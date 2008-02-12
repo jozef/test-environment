@@ -2,8 +2,8 @@ use 5.006;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME              => 'Test::Environment',
-    VERSION_FROM      => 'lib/Test/Environment.pm', # finds $VERSION
+	NAME              => 'Test::Environment',
+	VERSION_FROM      => 'lib/Test/Environment.pm', # finds $VERSION
 	PREREQ_PM    => {
 		Carp::Clan         => 0,
 		Test::More         => 0,
