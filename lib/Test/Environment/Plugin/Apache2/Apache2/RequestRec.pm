@@ -39,15 +39,13 @@ sub new {
     });
     
     # initilize all apr tables
-    foreach my $apt_table_name (qw(apr_table headers_in headers_out subprocess_env pnotes)) {
+    foreach my $apt_table_name (qw(apr_table headers_in headers_out subprocess_env)) {
         $self->{$apt_table_name} = APR::Table::make($self->apr_pool, 100)
             if not defined $self->{$apt_table_name};
     }
     
     return $self;
 }
-
-=cut
 
 sub pnotes {
     my $self      = shift;
@@ -60,9 +58,6 @@ sub pnotes {
     return $self->{'pnotes'}->{$note_name};
 }
 
-=cut
-
-sub pnotes         { return shift->get_set('pnotes',         @_) };
 sub apr_table      { return shift->get_set('apr_table',      @_) };
 sub subprocess_env { return shift->get_set('subprocess_env', @_) };
 sub headers_in     { return shift->get_set('headers_in',     @_) };
