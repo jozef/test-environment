@@ -1,5 +1,4 @@
-package # hide from CPAN indexer
-    Apache2::RequestRec;
+package Apache2::RequestRec;
 
 =head1 NAME
 
@@ -7,7 +6,31 @@ Test::Environment::Plugin::Apache2::Apache2::RequestRec - fake Apache2::RequestR
 
 =head1 SYNOPSIS
 
+    use Test::Environment qw{
+        Apache2
+    };
+    
+    my $request = Apache2::RequestRec->new(
+        'headers_in' => {
+            'Accept-Encoding' => 'xyz,gzip'
+        },
+        'hostname' => 'with.the.man.sk',
+        'uri'      => '/index.html',
+        'args'     => 'id=me',
+    );
+    is(
+        My::App:Apache2::Index::handler($request),
+        Apache2::Const::REDIRECT,
+    );
+    is(
+        $request->headers_out->get('Location'),
+        'http://with.the.man.sk/me/',
+    );
+
 =head1 DESCRIPTION
+
+Will populate Apache2::RequestRec namespace with fake methods that can be used for
+testing.
 
 =cut
 
@@ -20,7 +43,16 @@ use APR::Pool;
 use APR::Table;
 
 use base 'Class::Accessor::Fast';
+
+
 =head1 PROPERTIES
+
+    hostname
+    uri
+    apr_pool
+    args
+    get_server_port
+    dir_config
 
 =cut
 
@@ -29,23 +61,41 @@ __PACKAGE__->mk_accessors(qw{
     uri
     apr_pool
     args
+    get_server_port
+    dir_config
 });
+
+
+=head1 METHODS
+
+=head2 new()
+
+Object constructor.
+
+=cut
 
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new({
+        'get_server_port' => 80,
         'apr_pool'    => APR::Pool->new,
         @_,
     });
     
-    # initilize all apr tables
-    foreach my $apt_table_name (qw(apr_table headers_in headers_out subprocess_env)) {
+    # initialize all apr tables
+    foreach my $apt_table_name (qw(apr_table headers_in headers_out subprocess_env dir_config)) {
         $self->{$apt_table_name} = APR::Table::make($self->apr_pool, 100)
             if not defined $self->{$apt_table_name};
     }
     
     return $self;
 }
+
+=head2 pnotes
+
+Get/Set pnote.
+
+=cut
 
 sub pnotes {
     my $self      = shift;
@@ -58,12 +108,23 @@ sub pnotes {
     return $self->{'pnotes'}->{$note_name};
 }
 
-sub apr_table      { return shift->get_set('apr_table',      @_) };
-sub subprocess_env { return shift->get_set('subprocess_env', @_) };
-sub headers_in     { return shift->get_set('headers_in',     @_) };
-sub headers_out    { return shift->get_set('headers_out',    @_) };
+=head2 APR::Table methods
 
-sub get_set {
+=head3 apt_table()
+=head3 subprocess_env()
+=head3 headers_in()
+=head3 headers_out()
+=head3 dir_config()
+
+=cut
+
+sub apr_table      { return shift->_get_set('apr_table',      @_) };
+sub subprocess_env { return shift->_get_set('subprocess_env', @_) };
+sub headers_in     { return shift->_get_set('headers_in',     @_) };
+sub headers_out    { return shift->_get_set('headers_out',    @_) };
+sub dir_config     { return shift->_get_set('dir_config',     @_) };
+
+sub _get_set {
     my $self = shift;
     my $name = shift;
    
@@ -79,10 +140,24 @@ sub get_set {
     }
 }
 
+
+=head2 Apache2::Filter::r
+
+just calls $self->request_rec(@_);
+
+=cut
+
 sub Apache2::Filter::r {
     my $self   = shift;
     $self->request_rec(@_);
 }
+
+
+=head2 Apache2::Filter::request_rec
+
+Returns Apache2::RequestRec.
+
+=cut
 
 sub Apache2::Filter::request_rec {
     my $self   = shift;
@@ -101,3 +176,11 @@ sub Apache2::Filter::request_rec {
 
 
 'writing on the wall';
+
+__END__
+
+=head1 AUTHOR
+
+Jozef Kutej
+
+=cut

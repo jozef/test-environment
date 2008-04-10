@@ -1,5 +1,4 @@
-package # hide from CPAN indexer
-    Apache2::Filter;
+package Apache2::Filter;
 
 =head1 NAME
 
@@ -7,7 +6,24 @@ Test::Environment::Plugin::Apache2::Apache2::Filter - fake Apache2::Filter for T
 
 =head1 SYNOPSIS
 
+    use Test::Environment qw{
+        Apache2
+    };
+    
+    my $filter = Apache2::Filter->new(
+        'data' => \$data,
+    );
+    
+    is(
+        My::App:Apache2::Filter::handler($filter),
+        Apache2::Const::OK,
+    );
+    is($$filter->r->pnotes('any_news'), 'no');
+
 =head1 DESCRIPTION
+
+Will populate Apache2::Filter namespace with fake methods that can be used for Apache2::Filter
+testing.
 
 =cut
 
@@ -22,6 +38,11 @@ use Carp::Clan ();
 use base 'Class::Accessor::Fast';
 =head1 PROPERTIES
 
+    ctx
+    data
+    max_buffer_size
+    data_for_next_filter
+
 =cut
 
 __PACKAGE__->mk_accessors(qw{
@@ -31,6 +52,10 @@ __PACKAGE__->mk_accessors(qw{
 });
 
 =head1 METHODS
+
+=head2 new()
+
+Filter object contructor.
 
 =cut
 
@@ -60,6 +85,14 @@ sub new {
     return $self;
 }
 
+
+=head2 read($bufer, $len)
+
+Will put $len (or $self->max_bufer_size if smaller) characters from $self->data
+into the buffer.
+
+=cut
+
 sub read {
     my $self   = shift;
 
@@ -72,10 +105,26 @@ sub read {
     return read($self->data, $$buffer, $len);
 }
 
+
+=head2 print(@args)
+
+Will append @args to the $self->data_for_next_filter. 
+
+=cut
+
 sub print {
     my $self   = shift;
 
     $self->{'data_for_next_filter'} .= @_;
 }
 
-1;
+
+'man who sold the world';
+
+__END__
+
+=head1 AUTHOR
+
+Jozef Kutej
+
+=cut

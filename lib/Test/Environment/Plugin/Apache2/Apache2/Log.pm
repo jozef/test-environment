@@ -1,5 +1,4 @@
-package # hide from CPAN indexer
-    Apache2::Log;
+package Apache2::Log;
 
 =head1 NAME
 
@@ -7,7 +6,15 @@ Test::Environment::Plugin::Apache2::Apache2::Log - fake Apache2::Log for Test::E
 
 =head1 SYNOPSIS
 
+    use Test::Environment qw{
+        Apache2
+    };
+
+    $request->log->info('no info');
+
 =head1 DESCRIPTION
+
+Will add log method to the Apache2::RequestRec. 
 
 =cut
 
@@ -19,10 +26,28 @@ our $VERSION = '0.01';
 use Log::Log4perl;
 use List::MoreUtils 'none';
 
+
+=head1 METHODS
+
+=head2 Apache2::RequestRec::log
+
+Returns Log::Log4perl::get_logger().
+
+=cut
+
 sub Apache2::RequestRec::log {
     my $self   = shift;
     
     return Log::Log4perl::get_logger();
 }
 
-1;
+
+'tdtdddddt';
+
+__END__
+
+=head1 AUTHOR
+
+Jozef Kutej
+
+=cut
