@@ -1,3 +1,9 @@
+package Test::Environment::Plugin::Apache2::Apache2::Filter;
+
+our $VERSION = '0.01';
+
+1;
+
 package Apache2::Filter;
 
 =head1 NAME
@@ -42,6 +48,7 @@ use base 'Class::Accessor::Fast';
     data
     max_buffer_size
     data_for_next_filter
+    seen_eos
 
 =cut
 
@@ -49,6 +56,7 @@ __PACKAGE__->mk_accessors(qw{
     ctx
     data
     max_buffer_size
+    seen_eos
 });
 
 =head1 METHODS
@@ -122,6 +130,10 @@ sub print {
 'man who sold the world';
 
 __END__
+
+=head1 TODO
+
+	* implement sending/setting eos
 
 =head1 AUTHOR
 

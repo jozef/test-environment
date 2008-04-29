@@ -1,3 +1,9 @@
+package Test::Environment::Plugin::Apache2::Apache2::RequestRec;
+
+our $VERSION = '0.01';
+
+1;
+
 package Apache2::RequestRec;
 
 =head1 NAME
@@ -53,6 +59,8 @@ use base 'Class::Accessor::Fast';
     args
     get_server_port
     dir_config
+    status
+    content_type
 
 =cut
 
@@ -63,6 +71,8 @@ __PACKAGE__->mk_accessors(qw{
     args
     get_server_port
     dir_config
+    status
+    content_type
 });
 
 
@@ -108,6 +118,12 @@ sub pnotes {
     return $self->{'pnotes'}->{$note_name};
 }
 
+sub unparsed_uri {
+    my $self      = shift;
+    
+    return $self->uri.($self->args ? '?'.$self->args : '' );
+}
+
 =head2 APR::Table methods
 
 =head3 apt_table()
@@ -123,6 +139,11 @@ sub subprocess_env { return shift->_get_set('subprocess_env', @_) };
 sub headers_in     { return shift->_get_set('headers_in',     @_) };
 sub headers_out    { return shift->_get_set('headers_out',    @_) };
 sub dir_config     { return shift->_get_set('dir_config',     @_) };
+
+sub err_headers_out {
+    my $self   = shift;
+    $self->headers_out(@_);
+}
 
 sub _get_set {
     my $self = shift;
@@ -151,7 +172,6 @@ sub Apache2::Filter::r {
     my $self   = shift;
     $self->request_rec(@_);
 }
-
 
 =head2 Apache2::Filter::request_rec
 

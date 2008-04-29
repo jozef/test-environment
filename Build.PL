@@ -16,6 +16,12 @@ my $builder = Module::Build->new(
         'File::Basename'     => 0,
         'List::MoreUtils'    => 0,
         'DBI'                => 0,
+        'Log::Log4perl'      => 0,
+        'APR::Pool'          => 0,
+        'APR::Table'         => 0,
+        'Class::Accessor::Fast'
+                             => 0,
+        'IO::String'         => 0,
     },
     build_requires => {
         'Test::More' => 0,
