@@ -2,19 +2,24 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-          'PL_FILES' => {},
-          'INSTALLDIRS' => 'site',
           'NAME' => 'Test::Environment',
           'VERSION_FROM' => 'lib/Test/Environment.pm',
           'PREREQ_PM' => {
-                           'String::ShellQuote' => 0,
-                           'Test::More' => 0,
-                           'Test::Differences' => 0,
-                           'Carp::Clan' => 0,
-                           'File::Basename' => 0,
-                           'List::MoreUtils' => 0,
-                           'File::Slurp' => 0,
-                           'DBI' => 0
-                         }
+                           'APR::Pool' => '0',
+                           'APR::Table' => '0',
+                           'Carp::Clan' => '0',
+                           'Class::Accessor::Fast' => '0',
+                           'DBI' => '0',
+                           'File::Basename' => '0',
+                           'File::Slurp' => '0',
+                           'IO::String' => '0',
+                           'List::MoreUtils' => '0',
+                           'Log::Log4perl' => '0',
+                           'String::ShellQuote' => '0',
+                           'Test::Differences' => '0',
+                           'Test::More' => '0'
+                         },
+          'INSTALLDIRS' => 'site',
+          'PL_FILES' => {}
         )
 ;
