@@ -43,7 +43,7 @@ look in t/conf/ instead of conf/ for ordinary usage)
 use strict;
 use warnings;
 
-our $VERSION = '0.04_03';
+our $VERSION = '0.04';
 
 use Carp::Clan;
 use English '-no_match_vars';
@@ -86,7 +86,7 @@ Test::Environment::Plugin::* L<http://search.cpan.org/search?query=Test%3A%3AEnv
 
 =head1 AUTHOR
 
-Jozef Kutej, E<lt>jozef@kutej.netE<gt>
+Jozef Kutej, E<lt>jkutej@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
