@@ -1,5 +1,8 @@
 Revision history for Perl extension Test::Environment.
 
+0.05  Fri Feb 19 2010
+   - removed debian/ folder
+
 0.04  Thu Jun 17 06:52:41 2008
    - Apache2 plugin added
 

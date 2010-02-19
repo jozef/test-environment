@@ -1,10 +1,5 @@
 Build.PL
 Changes
-debian/changelog
-debian/compat
-debian/control
-debian/copyright
-debian/rules
 lib/Test/Environment.pm
 lib/Test/Environment/Plugin/Apache2.pm
 lib/Test/Environment/Plugin/Apache2/Apache2/Filter.pm

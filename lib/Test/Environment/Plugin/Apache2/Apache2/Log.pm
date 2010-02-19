@@ -1,6 +1,6 @@
 package Test::Environment::Plugin::Apache2::Apache2::Log;
 
-our $VERSION = '0.01';
+our $VERSION = '0.05';
 
 1;
 
@@ -27,7 +27,7 @@ Will add log method to the Apache2::RequestRec.
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.05';
 
 use Log::Log4perl;
 

@@ -24,7 +24,7 @@ So that the fake Apache2 modules are found and loaded from there.
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.05';
 
 use File::Basename qw();
 use File::Spec qw();
