@@ -1,5 +1,10 @@
 Revision history for Perl extension Test::Environment.
 
+0.06  Sat, 20 Nov 2010 18:50:14 +0100
+   - Apache2::RequestRec method() added
+   - convert hashes to APR::Table in Apache2::RequestRec new()
+   - added Apache2::Request mock
+
 0.05  Fri Feb 19 2010
    - removed debian/ folder
 

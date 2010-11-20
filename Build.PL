@@ -27,7 +27,6 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     add_to_cleanup      => [ 'Test-Environment-*' ],
-    create_makefile_pl  => 'traditional',
     sign                => 1,
     create_readme       => 1,
 );

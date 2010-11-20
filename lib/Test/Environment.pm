@@ -43,7 +43,7 @@ look in t/conf/ instead of conf/ for ordinary usage)
 use strict;
 use warnings;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Carp::Clan;
 use English '-no_match_vars';

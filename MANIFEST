@@ -4,6 +4,7 @@ lib/Test/Environment.pm
 lib/Test/Environment/Plugin/Apache2.pm
 lib/Test/Environment/Plugin/Apache2/Apache2/Filter.pm
 lib/Test/Environment/Plugin/Apache2/Apache2/Log.pm
+lib/Test/Environment/Plugin/Apache2/Apache2/Request.pm
 lib/Test/Environment/Plugin/Apache2/Apache2/RequestRec.pm
 lib/Test/Environment/Plugin/Dump.pm
 lib/Test/Environment/Plugin/PostgreSQL.pm

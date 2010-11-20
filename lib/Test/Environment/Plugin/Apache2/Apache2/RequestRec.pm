@@ -1,6 +1,6 @@
 package Test::Environment::Plugin::Apache2::Apache2::RequestRec;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
@@ -43,7 +43,7 @@ testing.
 use warnings;
 use strict;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use APR::Pool;
 use APR::Table;
@@ -61,6 +61,7 @@ use base 'Class::Accessor::Fast';
     dir_config
     status
     content_type
+    method
 
 =cut
 
@@ -73,6 +74,7 @@ __PACKAGE__->mk_accessors(qw{
     dir_config
     status
     content_type
+    method
 });
 
 
@@ -88,14 +90,25 @@ sub new {
     my $class = shift;
     my $self = $class->SUPER::new({
         'get_server_port' => 80,
-        'apr_pool'    => APR::Pool->new,
+        'apr_pool'        => APR::Pool->new,
+        'method'          => 'GET',
         @_,
     });
     
     # initialize all apr tables
     foreach my $apt_table_name (qw(apr_table headers_in headers_out subprocess_env dir_config)) {
-        $self->{$apt_table_name} = APR::Table::make($self->apr_pool, 100)
-            if not defined $self->{$apt_table_name};
+        my $apr_table = $self->{$apt_table_name} || APR::Table::make($self->apr_pool, 100);
+        
+        # if the parameter is plain HASH, convert it to APR::Table
+        if (ref $apr_table eq 'HASH') {
+            my $hash = $apr_table;
+            $apr_table = APR::Table::make($self->apr_pool, 100);
+            while (my ($key, $value) = each(%{$hash})) {
+                $apr_table->add($key => $value);
+            }
+        }
+        
+        $self->{$apt_table_name} = $apr_table;
     }
     
     return $self;

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 #use Test::More 'no_plan';
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 use FindBin '$Bin';
 
@@ -30,6 +30,7 @@ sub main {
 	use_ok 'Apache2::RequestRec';
 	use_ok 'Apache2::Filter';
 	use_ok 'Apache2::Log';
+	use_ok 'Apache2::Request';
 	
 	eval 'use Apache2::NonExisting';
 	is($@, '', 'check loading libs from t/lib-no-Apache2');

@@ -1,6 +1,6 @@
 package Test::Environment::Plugin::Apache2::Apache2::Filter;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
@@ -36,7 +36,7 @@ testing.
 use warnings;
 use strict;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use IO::String;
 use Carp::Clan ();

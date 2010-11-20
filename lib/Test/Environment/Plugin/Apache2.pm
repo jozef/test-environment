@@ -2,7 +2,7 @@ package Test::Environment::Plugin::Apache2;
 
 =head1 NAME
 
-Test::Environment::Plugin::Apache2 - simulate Apache2 modules
+Test::Environment::Plugin::Apache2 - mock Apache2 modules to test mod_perl2 handlers
 
 =head1 SYNOPSIS
 
@@ -17,14 +17,19 @@ This module will just sets:
 
 	unshift @INC, File::Spec->catdir(File::Basename::dirname(__FILE__), 'Apache');
 
-So that the fake Apache2 modules are found and loaded from there.
+So that the mock Apache2 modules are found and loaded from there. No need to
+have following modules in order to test L<mod_perl2> handlers.
+
+L<Test::Environment::Plugin::Apache2::Apache2::Filter> (L<Apache2::Filter>),
+L<Test::Environment::Plugin::Apache2::Apache2::Log> (L<Apache2::Log>),
+L<Test::Environment::Plugin::Apache2::Apache2::RequestRec> (L<Apache2::RequestRec>)
 
 =cut
 
 use warnings;
 use strict;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use File::Basename qw();
 use File::Spec qw();
