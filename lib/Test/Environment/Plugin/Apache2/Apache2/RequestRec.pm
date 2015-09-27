@@ -62,6 +62,7 @@ use base 'Class::Accessor::Fast';
     status
     content_type
     method
+    protocol
 
 =cut
 
@@ -75,6 +76,7 @@ __PACKAGE__->mk_accessors(qw{
     status
     content_type
     method
+    protocol
 });
 
 
@@ -92,6 +94,7 @@ sub new {
         'get_server_port' => 80,
         'apr_pool'        => APR::Pool->new,
         'method'          => 'GET',
+        'protocol'        => 'HTTP/1.1',
         @_,
     });
     
@@ -114,9 +117,27 @@ sub new {
     return $self;
 }
 
+=head2 notes
+
+Get/Set notes.
+
+=cut
+
+
+sub notes {
+    my $self      = shift;
+    my $note_name = shift;
+
+    if (@_ > 0) {
+        $self->{'notes'}->{$note_name} = shift;
+    }
+
+    return $self->{'notes'}->{$note_name};
+}
+
 =head2 pnotes
 
-Get/Set pnote.
+Get/Set pnotes.
 
 =cut
 
@@ -206,6 +227,32 @@ sub Apache2::Filter::request_rec {
         
     return $self->{'request_rec'};
 }
+
+=head2 populate_env
+
+Sets CGI %ENV variables based on current RequestRec object.
+
+=cut
+
+sub populate_env {
+    my $self   = shift;
+
+    $ENV{REQUEST_METHOD} = $self->method;
+    $ENV{HTTP_HOST}      = $self->hostname;
+    $ENV{REQUEST_URI}    = $self->uri;
+    $ENV{QUERY_STRING}   = $self->args;
+    my $cookie = $self->headers_in->get('cookie');
+    $ENV{HTTP_COOKIE}    = $cookie
+        if $cookie;
+}
+
+=head2 rflush
+
+empty call
+
+=cut
+
+sub rflush { }
 
 
 'writing on the wall';
