@@ -8,12 +8,9 @@ lib/Test/Environment/Plugin/Apache2/Apache2/Request.pm
 lib/Test/Environment/Plugin/Apache2/Apache2/RequestRec.pm
 lib/Test/Environment/Plugin/Dump.pm
 lib/Test/Environment/Plugin/PostgreSQL.pm
-Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 META.yml
 README
-t/00_distribution.t
-t/00_signature.t
 t/01_Test-Environment.t
 t/02_Test-Environment-Plugin-PostreSQL.t
 t/03_Test-Environment-Plugin-Dump.t
@@ -56,5 +53,8 @@ t/lib-no-Apache2/Apache2/SubRequest.pm
 t/lib-no-Apache2/Apache2/URI.pm
 t/lib-no-Apache2/Apache2/Util.pm
 t/lib-no-Apache2/Apache2/XSLoader.pm
-t/pod-coverage.t
-t/pod.t
+xt/00_distribution.t
+xt/00_signature.t
+xt/pod-coverage.t
+xt/pod.t
+META.json
