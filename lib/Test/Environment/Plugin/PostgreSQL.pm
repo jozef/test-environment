@@ -50,7 +50,7 @@ Any postgres connection settings not listed or undef will be deleted from the %E
 use strict;
 use warnings;
 
-our $VERSION = 0.03;
+our $VERSION = "0.07";
 
 use base qw{ Exporter };
 our @EXPORT = qw{

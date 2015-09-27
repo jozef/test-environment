@@ -29,7 +29,7 @@ L<Test::Environment::Plugin::Apache2::Apache2::RequestRec> (L<Apache2::RequestRe
 use warnings;
 use strict;
 
-our $VERSION = '0.06';
+our $VERSION = "0.07";
 
 use File::Basename qw();
 use File::Spec qw();

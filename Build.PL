@@ -5,7 +5,7 @@ use Module::Build;
 my $builder = Module::Build->new(
     module_name         => 'Test::Environment',
     license             => 'perl',
-    dist_author         => 'Jozef Kutej <jozef@kutej.net>',
+    dist_author         => 'Jozef Kutej <jkutej@cpan.org>',
     dist_version_from   => 'lib/Test/Environment.pm',
     requires => {
         'Carp::Clan'         => 0,
@@ -27,7 +27,6 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     add_to_cleanup      => [ 'Test-Environment-*' ],
-    sign                => 1,
     create_readme       => 1,
 );
 

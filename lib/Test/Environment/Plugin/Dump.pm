@@ -34,7 +34,7 @@ Default $dump_folder is $FindBin::Bin.'/dumps'.
 use strict;
 use warnings;
 
-our $VERSION = 0.01;
+our $VERSION = "0.07";
 
 use base qw{ Exporter };
 our @EXPORT = qw{

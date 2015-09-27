@@ -31,5 +31,6 @@
 ^tmp/
 .*\.tar\.gz
 ^MYMETA.yml$
+^MYMETA.json$
 ^Test-Environment-
 
